@@ -1,74 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-    <View
+    android:padding="@dimen/_7ssp"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
 
+    <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/black"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-      android:layout_marginTop="@dimen/_5sdp"/>
+        android:layout_marginLeft="@dimen/_2sdp"
+        android:layout_marginRight="@dimen/_2sdp"
+        android:background="@color/black"/>
+
+
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv"
         android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_2sdp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:elevation="@dimen/_30sdp"
-        app:cardCornerRadius="@dimen/_10sdp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:elevation="@dimen/_30ssp"
+        app:cardCornerRadius="@dimen/_10ssp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/photo"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:src="@drawable/man" />
-    <TextView
-        android:id="@+id/playerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Player name"
-        android:textColor="@color/black"
-        android:layout_marginTop="@dimen/_18sdp"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:textSize="@dimen/_19sdp"
-        android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_5ssp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/photo"
+                android:layout_width="84dp"
+                android:layout_height="60dp"
+                android:src="@drawable/man" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp"
+                android:text="Name   :"/>
+            <TextView
+                android:id="@+id/playerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp"
+                android:text="  User_Name"/>
 
 
-  <!--  <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginLeft="-135sp"
-        android:layout_marginTop="@dimen/_36ssp"
-        android:text="High Score:"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_14sdp" />
-    <TextView
-        android:id="@+id/highScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_36ssp"
-        android:layout_marginLeft="5sp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_14sdp"
-        android:text="000" />-->
+        </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="84dp"
+                android:layout_height="60dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:layout_marginTop="@dimen/_30ssp"
+                android:textSize="@dimen/_16ssp"
+                android:text="Score   :"/>
+            <TextView
+                android:id="@+id/Score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_30ssp"
+                android:textSize="@dimen/_16ssp"
+                android:text="  0"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="PLAY"
+            android:layout_marginLeft="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_70sdp"/>
+        <Button
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="VIEW"
+            android:layout_marginLeft="@dimen/_170sdp"
+            android:layout_marginTop="@dimen/_70sdp"/>
+
     </androidx.cardview.widget.CardView>
     <View
-
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/black"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        />
-</LinearLayout>
+        android:layout_below="@+id/cv"
+        android:layout_marginLeft="@dimen/_2sdp"
+        android:layout_marginRight="@dimen/_2sdp"
+        android:background="@color/black"/>
+
+
+
+
+
+
+
+</RelativeLayout>

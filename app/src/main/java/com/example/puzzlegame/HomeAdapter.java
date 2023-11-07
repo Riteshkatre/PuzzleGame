@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +47,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
                 .into(holder.photo);
 
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(v.getContext(), GameActivity.class);
@@ -54,6 +56,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
                 v.getContext().startActivity(i);
 
 
+            }
+        });
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "view", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -67,12 +75,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
 
     public class HomeAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        TextView playerName;
+        TextView playerName,Score;
         CircleImageView photo;
+
+
+        Button play,view;
+
         public HomeAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             playerName=itemView.findViewById(R.id.playerName);
             photo=itemView.findViewById(R.id.photo);
+            play=itemView.findViewById(R.id.play);
+            view=itemView.findViewById(R.id.view);
+            Score=itemView.findViewById(R.id.Score);
         }
     }
 
