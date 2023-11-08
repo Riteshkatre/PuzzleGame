@@ -1,5 +1,6 @@
 package com.example.puzzlegame;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,18 +20,25 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterViewHolder> {
 
-    private ArrayList<MyDataModel> dataList;
+    Context context;
+    private final ArrayList<MyDataModel> dataList;
     MyDataBaseHelper myDataBaseHelper;
+    PlayerItemInterface playerItemInterface;
 
-    public HomeAdapter(ArrayList<MyDataModel> dataList) {
+    public HomeAdapter(Context context, ArrayList<MyDataModel> dataList) {
+        this.context = context;
         this.dataList = dataList;
+    }
+
+    public void setPlayerItemInterface(PlayerItemInterface playerItemInterface) {
+        this.playerItemInterface = playerItemInterface;
     }
 
     @NonNull
     @Override
     public HomeAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.home_item_file ,parent,false);
+        View view = layoutInflater.inflate(R.layout.home_item_file, parent, false);
         return new HomeAdapterViewHolder(view);
     }
 
@@ -47,22 +55,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
                 .into(holder.photo);
 
 
-        holder.play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(v.getContext(), GameActivity.class);
-                i.putExtra("name",myDataModel.getName());
-                i.putExtra("image",myDataModel.getImage());
-                v.getContext().startActivity(i);
+        holder.play.setOnClickListener(v -> playerItemInterface.onPlayClicked(myDataModel));
+        holder.view.setOnClickListener(v -> {
+            Intent i=new Intent(v.getContext(), HistoryActivity.class);
+            v.getContext().startActivity(i);
 
-
-            }
-        });
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "view", Toast.LENGTH_SHORT).show();
-            }
         });
 
 
@@ -73,27 +70,31 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
         return dataList.size();
     }
 
-    public class HomeAdapterViewHolder extends RecyclerView.ViewHolder {
-
-        TextView playerName,Score;
-        CircleImageView photo;
-
-
-        Button play,view;
-
-        public HomeAdapterViewHolder(@NonNull View itemView) {
-            super(itemView);
-            playerName=itemView.findViewById(R.id.playerName);
-            photo=itemView.findViewById(R.id.photo);
-            play=itemView.findViewById(R.id.play);
-            view=itemView.findViewById(R.id.view);
-            Score=itemView.findViewById(R.id.Score);
-        }
-    }
-
     public void setData(ArrayList<MyDataModel> newDataList) {
         dataList.clear();
         dataList.addAll(newDataList);
         notifyDataSetChanged();
+    }
+
+    public interface PlayerItemInterface {
+        void onPlayClicked(MyDataModel model);
+    }
+
+    public class HomeAdapterViewHolder extends RecyclerView.ViewHolder {
+
+        TextView playerName, Score;
+        CircleImageView photo;
+
+
+        Button play, view;
+
+        public HomeAdapterViewHolder(@NonNull View itemView) {
+            super(itemView);
+            playerName = itemView.findViewById(R.id.playerName);
+            photo = itemView.findViewById(R.id.photo);
+            play = itemView.findViewById(R.id.play);
+            view = itemView.findViewById(R.id.view);
+            Score = itemView.findViewById(R.id.Score);
+        }
     }
 }

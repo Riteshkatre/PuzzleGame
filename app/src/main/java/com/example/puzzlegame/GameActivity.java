@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -27,56 +25,66 @@ import java.util.TimerTask;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GameActivity extends AppCompatActivity {
+    private final int[] tiles = new int[9];
     TextView playerName, moves, time;
     ImageView setting;
     CircleImageView photo;
     int emptyx = 2;
+    MyDataModel model;
     int emptyy = 2;
-
     int stepCount = 0;
     GridLayout group;
     Button[][] buttons;
     Timer timer;
-    int timeCount=0;
-
+    int timeCount = 0;
     CardView pause;
     boolean isPaused = false;
-
-    private final int[] tiles = new int[9];
-
+    MyDataBaseHelper dataBaseHelper;
+    Intent i;
+    Bundle extras;
     private MediaPlayer mediaPlayer;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        playerName = findViewById(R.id.playerName);
-        moves = findViewById(R.id.moves);
 
-        time = findViewById(R.id.time);
-        setting = findViewById(R.id.setting);
-        photo = findViewById(R.id.photo);
-        pause=findViewById(R.id.pause);
+        i = getIntent();
+        extras = i.getExtras();
 
-        String playerNameText = getIntent().getStringExtra("name");
-        String photoPath = getIntent().getStringExtra("image");
+        if (extras != null) {
+            model = extras.getParcelable("playerModel");
 
-        // Set the retrieved data in your TextView and ImageView
-        playerName.setText(playerNameText);
-        displayImage(this, photo, photoPath);
+            if (model != null) {
+                playerName = findViewById(R.id.playerName);
+                moves = findViewById(R.id.moves);
 
-        loadViews();
-        loadNumber();
-        genreteNumbers();
-        loadDataToView();
+                time = findViewById(R.id.time);
+                setting = findViewById(R.id.setting);
+                photo = findViewById(R.id.photo);
+                pause = findViewById(R.id.pause);
+
+                String playerNameText =model.getName();
+                String photoPath = model.getImage();
 
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.tone_1);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+                dataBaseHelper = new MyDataBaseHelper(this);
+
+
+                // Set the retrieved data in your TextView and ImageView
+                playerName.setText(playerNameText);
+                displayImage(this, photo, photoPath);
+
+                loadViews();
+                loadNumber();
+                genreteNumbers();
+                loadDataToView();
+
+
+
+                mediaPlayer = MediaPlayer.create(this, R.raw.tone_1);
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start();
 
 //        if (savedInstanceState != null) {
 //            // Restore the saved values
@@ -84,33 +92,39 @@ public class GameActivity extends AppCompatActivity {
 //            stepCount = savedInstanceState.getInt("stepCount", 0);
 //        }
 
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isPaused) {
-                    isPaused = true;
-                    if (timer != null) {
-                        timer.cancel();
+                pause.setOnClickListener(v -> {
+                    if (!isPaused) {
+                        isPaused = true;
+                        if (timer != null) {
+                            timer.cancel();
+                        }
+                        showPauseDialog();
+                        mediaPlayer.pause();
                     }
-                    showPauseDialog();
-                    mediaPlayer.pause();
-                }
 
-            }
-        });
+                });
 
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(GameActivity.this, SettingsActivity.class);
-                startActivity(i);
+                setting.setOnClickListener(v -> {
+                    Intent i = new Intent(GameActivity.this, SettingsActivity.class);
+                    startActivity(i);
 
-            }
-        });
+                });
+
 
 //        moves.setText(String.valueOf(stepCount));
+            }
+        }
     }
 
+    private void gameWon() {
+        if (dataBaseHelper != null) {
+            int userId = 1;
+            int moves = stepCount;
+            int timeTaken = timeCount;
+
+            dataBaseHelper.addScore(model.getId(), moves, timeTaken);
+        }
+    }
 
 
     @Override
@@ -120,6 +134,7 @@ public class GameActivity extends AppCompatActivity {
             mediaPlayer.pause();
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -135,6 +150,7 @@ public class GameActivity extends AppCompatActivity {
             mediaPlayer.release();
         }
     }
+
     public void onResumeClicked(View view) {
         if (isPaused) {
             isPaused = false;
@@ -142,6 +158,7 @@ public class GameActivity extends AppCompatActivity {
             mediaPlayer.start();
         }
     }
+
     private void displayImage(Context context, ImageView imageView, String currentPhotoPath) {
         Glide.with(context)
                 .load(currentPhotoPath)
@@ -212,6 +229,7 @@ public class GameActivity extends AppCompatActivity {
             tiles[i] = i + 1;
         }
     }
+
     private void loadTimer() {
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -250,7 +268,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void buttonClick(View view) {
-        Button button = (Button) view;
+        if (buttons != null){
+            Button button = (Button) view;
         String tag = button.getTag().toString();
         int x = Character.getNumericValue(tag.charAt(0)); // Extract row from the tag
         int y = Character.getNumericValue(tag.charAt(1)); // Extract column from the tag
@@ -268,6 +287,7 @@ public class GameActivity extends AppCompatActivity {
             if (timer == null) {
                 loadTimer();
             }
+        }
         }
         checkWin();
     }
@@ -291,6 +311,8 @@ public class GameActivity extends AppCompatActivity {
 
         if (isWin) {
             timer.cancel();
+            gameWon();
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Congratulations!!!");
             builder.setCancelable(false);
@@ -312,7 +334,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         if (isPaused) {
             onResumeClicked(null); // Resume the game if paused
@@ -343,7 +365,7 @@ public class GameActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-    }
+    }*/
 
     private void showPauseDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

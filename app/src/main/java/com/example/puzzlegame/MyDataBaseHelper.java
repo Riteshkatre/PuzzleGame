@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyDataBaseHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
@@ -20,6 +21,14 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ID = "Id";
     private static final String KEY_NAME = "Name";
     private static final String KEY_IMAGE = "Image";
+
+    /// Score Table.......................
+    private static final String TABLE_SCORE = "Scores";
+    private static final String KEY_SCORE_ID = "Id";
+    private static final String KEY_USER_ID = "UserId";
+    private static final String KEY_MOVES = "Moves";
+    private static final String KEY_TIME = "Time_Taken";
+
 
     public MyDataBaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -34,7 +43,17 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(query);
 
+        // For Score Table
+        String CREATE_TABLE_SCORE = "CREATE TABLE " + TABLE_SCORE + "("
+                + KEY_SCORE_ID + " INTEGER PRIMARY KEY,"
+                + KEY_USER_ID + " INTEGER,"
+                + KEY_MOVES + " INTEGER,"
+                + KEY_TIME + " INTEGER,"
+                + "FOREIGN KEY (" + KEY_USER_ID + ") REFERENCES " + TABLE_NAME + "(" + KEY_ID + ")"
+                + ")";
+        db.execSQL(CREATE_TABLE_SCORE);
     }
+
 
     public void addNewUser(String name, String image) {
 
@@ -46,6 +65,18 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
+
+    //Fre Score Table..........................
+    public void addScore(int userId, int moves, int timeTaken) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_ID, userId);
+        values.put(KEY_MOVES, moves);
+        values.put(KEY_TIME, timeTaken);
+        db.insert(TABLE_SCORE, null, values);
+        db.close();
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -74,15 +105,73 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                @SuppressLint("Range") int id= cursor.getInt(cursor.getColumnIndex(KEY_ID));
-                @SuppressLint("Range") String name= cursor.getString(cursor.getColumnIndex(KEY_NAME));
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
                 @SuppressLint("Range") String image = cursor.getString(cursor.getColumnIndex(KEY_IMAGE));
 
-                MyDataModel data = new MyDataModel(id,name, image);
+                MyDataModel data = new MyDataModel(id, name, image);
                 dataList.add(data);
             } while (cursor.moveToNext());
         }
         cursor.close();
         return dataList;
     }
+
+    //For Score Table..................................
+    public ArrayList<ScoreDataModel> getAllScores() {
+        ArrayList<ScoreDataModel> scoreList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SCORE, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") int scoreId = cursor.getInt(cursor.getColumnIndex(KEY_SCORE_ID));
+                @SuppressLint("Range") int userId = cursor.getInt(cursor.getColumnIndex(KEY_USER_ID));
+                @SuppressLint("Range") int moves = cursor.getInt(cursor.getColumnIndex(KEY_MOVES));
+                @SuppressLint("Range") int timeTaken = cursor.getInt(cursor.getColumnIndex(KEY_TIME));
+
+                ScoreDataModel scoreData = new ScoreDataModel(scoreId, userId, moves, timeTaken);
+                scoreList.add(scoreData);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return scoreList;
+    }
+
+    //FOR HISRORY...............
+
+    public List<HistoryDataModel> getAllHistory(int playerId) {
+        List<HistoryDataModel> historyDataModelList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT " +
+                TABLE_NAME + "." + KEY_ID + ", " +
+                TABLE_NAME + "." + KEY_NAME + ", " +
+                TABLE_NAME + "." + KEY_IMAGE + ", " +
+                TABLE_SCORE + "." + KEY_MOVES + ", " +
+                TABLE_SCORE + "." + KEY_TIME +
+                " FROM " + TABLE_SCORE +
+                " INNER JOIN " + TABLE_NAME +
+                " ON " + TABLE_SCORE + "." + KEY_USER_ID + " = " + TABLE_NAME + "." + KEY_ID +
+                " WHERE " + TABLE_SCORE + "." + KEY_USER_ID + " = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(playerId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") int userId = cursor.getInt(cursor.getColumnIndex(KEY_ID));
+                @SuppressLint("Range")  String userName = cursor.getString(cursor.getColumnIndex(KEY_NAME));
+                @SuppressLint("Range")    String image = cursor.getString(cursor.getColumnIndex(KEY_IMAGE));
+                @SuppressLint("Range")  int moves = cursor.getInt(cursor.getColumnIndex(KEY_MOVES));
+                @SuppressLint("Range")  String timeTaken = cursor.getString(cursor.getColumnIndex(KEY_TIME));
+
+                HistoryDataModel historyDataModel = new HistoryDataModel(userId, userName, image, moves, timeTaken);
+                historyDataModelList.add(historyDataModel);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return historyDataModelList;
+    }
+
+
 }

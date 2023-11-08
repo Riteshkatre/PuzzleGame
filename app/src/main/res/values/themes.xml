@@ -2,17 +2,18 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PuzzleGame" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">#1D2551</item>
+        <item name="colorPrimary">#1D2551</item>
     </style>
 
     <style name="Theme.PuzzleGame" parent="Base.Theme.PuzzleGame" />
-    
+
     <style name="ButtonStyle">
 
         <item name="android:layout_width">@dimen/_60sdp</item>
         <item name="android:layout_height">@dimen/_60sdp</item>
         <item name="android:onClick">buttonClick</item>
-        <item name="android:background">@drawable/rectangle_button_background</item> <!-- Set the custom background drawable -->
+        <item name="android:background">@drawable/rectangle_button_background
+        </item> <!-- Set the custom background drawable -->
 
     </style>
 </resources>
