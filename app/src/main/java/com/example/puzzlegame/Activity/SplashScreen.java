@@ -1,4 +1,4 @@
-package com.example.puzzlegame;
+package com.example.puzzlegame.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.puzzlegame.R;
 
 public class SplashScreen extends AppCompatActivity {
     ImageView logo;

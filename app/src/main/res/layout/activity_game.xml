@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1D2551"
-    tools:context=".GameActivity">
+    tools:context=".Activity.GameActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -253,6 +253,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="PAUSE"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+            </androidx.cardview.widget.CardView><androidx.cardview.widget.CardView
+                android:id="@+id/shuffleNumbers"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginLeft="@dimen/_180sdp"
+                android:layout_marginTop="-33dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SHUFFLE"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>

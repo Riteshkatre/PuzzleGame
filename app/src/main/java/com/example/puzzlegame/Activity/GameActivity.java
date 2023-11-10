@@ -1,4 +1,4 @@
-package com.example.puzzlegame;
+package com.example.puzzlegame.Activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,6 +17,9 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.puzzlegame.MyDataBaseHelper;
+import com.example.puzzlegame.DataModel.MyDataModel;
+import com.example.puzzlegame.R;
 
 import java.util.Random;
 import java.util.Timer;
@@ -37,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
     Button[][] buttons;
     Timer timer;
     int timeCount = 0;
-    CardView pause;
+    CardView pause,shuffleNumbers;
     boolean isPaused = false;
     MyDataBaseHelper dataBaseHelper;
     Intent i;
@@ -63,6 +66,7 @@ public class GameActivity extends AppCompatActivity {
                 setting = findViewById(R.id.setting);
                 photo = findViewById(R.id.photo);
                 pause = findViewById(R.id.pause);
+                shuffleNumbers = findViewById(R.id.shuffleNumbers);
 
                 String playerNameText =model.getName();
                 String photoPath = model.getImage();
@@ -110,11 +114,42 @@ public class GameActivity extends AppCompatActivity {
 
                 });
 
+                shuffleNumbers.setOnClickListener(v -> {
+                    shuffleNumbers();
+
+
+                });
+
 
 //        moves.setText(String.valueOf(stepCount));
             }
         }
     }
+    public void shuffleNumbers() {
+        Random random = new Random();
+        int emptyIndex = emptyx * 3 + emptyy;
+
+        for (int i = 0; i < tiles.length; i++) {
+            if (i != emptyIndex) {
+                int randomIndex = random.nextInt(tiles.length - 1); // Exclude 0
+                if (randomIndex >= emptyIndex) {
+                    randomIndex++;
+                }
+
+                int temp = tiles[i];
+                tiles[i] = tiles[randomIndex];
+                tiles[randomIndex] = temp;
+            }
+        }
+
+        stepCount = 0;
+        moves.setText(String.valueOf(stepCount));
+        timeCount = 0;
+        setTime(timeCount);
+
+        loadDataToView();
+    }
+
 
     private void gameWon() {
         if (dataBaseHelper != null) {
@@ -334,10 +369,10 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
+    @Override
     public void onBackPressed() {
         if (isPaused) {
-            onResumeClicked(null); // Resume the game if paused
+            onResumeClicked(null);
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Quit Game ??");
@@ -365,7 +400,7 @@ public class GameActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-    }*/
+    }
 
     private void showPauseDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

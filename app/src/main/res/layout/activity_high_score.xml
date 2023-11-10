@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.HistoryActivity">
-
+    tools:context=".Activity.HighScore">
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_13sdp"
         android:gravity="center"
-        android:text="User History"
+        android:text="High-Score"
         android:textColor="@color/black"
         android:textSize="@dimen/_30sdp"
         android:textStyle="bold" />
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="@dimen/_179sdp"
+        android:layout_height="3dp"
+        android:layout_marginStart="@dimen/_70sdp"
+        android:layout_below="@+id/tv"
+        android:background="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv"
         android:layout_marginTop="@dimen/_20ssp"
-        tools:itemCount="4"
-        tools:listitem="@layout/history_item_file" />
-
+        tools:itemCount="3"
+        tools:listitem="@layout/score_item_file"
+        android:layout_below="@+id/view"/>
 
 </RelativeLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Activity.MainActivity"
     android:background="#1D2551"
     android:orientation="vertical">
 
@@ -58,6 +58,10 @@
             android:gravity="center"
             android:layout_marginLeft="@dimen/_10ssp"
             android:background="@drawable/phonedra"
+            android:maxLength="15"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
            android:hint="Enter Your Name"
             android:textColorHint="@color/black"/>
 

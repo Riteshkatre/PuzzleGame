@@ -1,18 +1,19 @@
-package com.example.puzzlegame;
+package com.example.puzzlegame.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.puzzlegame.DataModel.MyDataModel;
+import com.example.puzzlegame.MyDataBaseHelper;
+import com.example.puzzlegame.R;
 
 import java.util.ArrayList;
 
@@ -20,8 +21,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterViewHolder> {
 
-    Context context;
     private final ArrayList<MyDataModel> dataList;
+    Context context;
     MyDataBaseHelper myDataBaseHelper;
     PlayerItemInterface playerItemInterface;
 
@@ -54,12 +55,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.photo);
 
+        holder.Score.setText(String.valueOf(myDataModel.getId()));
+
 
         holder.play.setOnClickListener(v -> playerItemInterface.onPlayClicked(myDataModel));
         holder.view.setOnClickListener(v -> {
-            Intent i=new Intent(v.getContext(), HistoryActivity.class);
-            v.getContext().startActivity(i);
-
+            playerItemInterface.onViewClicked(myDataModel);
         });
 
 
@@ -78,6 +79,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
 
     public interface PlayerItemInterface {
         void onPlayClicked(MyDataModel model);
+
+        void onViewClicked(MyDataModel model);
     }
 
     public class HomeAdapterViewHolder extends RecyclerView.ViewHolder {

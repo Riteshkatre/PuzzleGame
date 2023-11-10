@@ -1,4 +1,4 @@
-package com.example.puzzlegame;
+package com.example.puzzlegame.DataModel;
 
 import android.os.Parcel;
 import android.os.Parcelable;

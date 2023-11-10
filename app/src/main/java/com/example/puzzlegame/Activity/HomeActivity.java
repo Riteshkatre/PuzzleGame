@@ -1,8 +1,9 @@
-package com.example.puzzlegame;
+package com.example.puzzlegame.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.puzzlegame.Adapter.HomeAdapter;
+import com.example.puzzlegame.DataModel.MyDataModel;
+import com.example.puzzlegame.MyDataBaseHelper;
+import com.example.puzzlegame.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -47,13 +52,30 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(HomeActivity.this, RecyclerView.VERTICAL, false);
         rcv.setLayoutManager(layoutManager);
         adapter = new HomeAdapter(HomeActivity.this, dataList);
-        adapter.setPlayerItemInterface(model -> {
-            Intent i = new Intent(HomeActivity.this, GameActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("playerModel", model);
-            i.putExtras(bundle);
-            startActivity(i);
+        /*adapter.setPlayerItemInterface(model -> {
+
+        });*/
+
+        adapter.setPlayerItemInterface(new HomeAdapter.PlayerItemInterface() {
+            @Override
+            public void onPlayClicked(MyDataModel model) {
+                Intent i = new Intent(HomeActivity.this, GameActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("playerModel", model);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+
+            @Override
+            public void onViewClicked(MyDataModel model) {
+                Intent i = new Intent(HomeActivity.this, HistoryActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("historyModel", model);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
         });
+
         rcv.setAdapter(adapter);
 
         swipeRefresh.setOnRefreshListener(() -> refreshData());
@@ -64,7 +86,11 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-        cv.setOnClickListener(v -> Toast.makeText(HomeActivity.this, "high score", Toast.LENGTH_SHORT).show());
+        cv.setOnClickListener(v -> {
+           Intent i=new Intent(HomeActivity.this, HighScore.class);
+           startActivity(i);
+           finish();
+        });
     }
 
     private void refreshData() {
@@ -75,10 +101,10 @@ public class HomeActivity extends AppCompatActivity {
         swipeRefresh.setRefreshing(false);
     }
 
-   /* @Override
+    @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Exit App");
+        builder.setTitle("Exit App!!!!");
         builder.setMessage("Are you sure you want to exit the app?");
         builder.setCancelable(false);
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -98,5 +124,4 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-*/
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/_7ssp"
+    android:layout_height="wrap_content">
+
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10ssp"
+        android:layout_margin="@dimen/_5ssp"
+        android:elevation="@dimen/_7ssp"
+        android:backgroundTint="#EAE4E4">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15ssp"
+                android:text="User_Id    :"/>
+            <TextView
+                android:id="@+id/tx_User_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp"
+                android:hint="  user_id "/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:textSize="@dimen/_16ssp"
+                android:text="Time        :"/>
+            <TextView
+                android:id="@+id/tx_Time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:textSize="@dimen/_16ssp"
+                android:hint="  time"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_25ssp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:layout_marginTop="@dimen/_15ssp"
+                android:textSize="@dimen/_16ssp"
+                android:text="Moves     :"/>
+            <TextView
+                android:id="@+id/tx_Moves"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_15ssp"
+                android:textSize="@dimen/_16ssp"
+                android:hint="  moves"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>

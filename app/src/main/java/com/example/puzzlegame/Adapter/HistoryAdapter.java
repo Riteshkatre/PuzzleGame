@@ -1,4 +1,4 @@
-package com.example.puzzlegame;
+package com.example.puzzlegame.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.puzzlegame.DataModel.HistoryDataModel;
+import com.example.puzzlegame.MyDataBaseHelper;
+import com.example.puzzlegame.R;
 
 import java.util.ArrayList;
 
@@ -25,7 +28,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryA
     public HistoryAdapter(Context context, ArrayList<HistoryDataModel> historyDataModels, MyDataBaseHelper dbHandler) {
         this.context = context;
         this.historyDataModels = historyDataModels;
-        this.dbHandler = dbHandler; // Initialize dbHandler
+        this.dbHandler = dbHandler;
     }
 
     @NonNull
@@ -47,7 +50,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryA
                 .placeholder(R.drawable.man)
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.photo);
-        dbHandler.getAllScores();
 
 
     }

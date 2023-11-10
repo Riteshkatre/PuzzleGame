@@ -1,4 +1,4 @@
-package com.example.puzzlegame;
+package com.example.puzzlegame.DataModel;
 
 public class ScoreDataModel {
     private int scoreId;

@@ -9,6 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.puzzlegame.DataModel.HistoryDataModel;
+import com.example.puzzlegame.DataModel.MyDataModel;
+import com.example.puzzlegame.DataModel.ScoreDataModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,25 +122,31 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     }
 
     //For Score Table..................................
-    public ArrayList<ScoreDataModel> getAllScores() {
+    public ArrayList<ScoreDataModel> getAllScores(int Limit) {
         ArrayList<ScoreDataModel> scoreList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SCORE, null);
+        Cursor cursor = db.rawQuery( "SELECT * FROM " + TABLE_SCORE + " ORDER BY " + KEY_MOVES + " ASC LIMIT " + Limit, null);
 
         if (cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") int scoreId = cursor.getInt(cursor.getColumnIndex(KEY_SCORE_ID));
                 @SuppressLint("Range") int userId = cursor.getInt(cursor.getColumnIndex(KEY_USER_ID));
-                @SuppressLint("Range") int moves = cursor.getInt(cursor.getColumnIndex(KEY_MOVES));
-                @SuppressLint("Range") int timeTaken = cursor.getInt(cursor.getColumnIndex(KEY_TIME));
+                @SuppressLint("Range") int move = cursor.getInt(cursor.getColumnIndex(KEY_MOVES));
+                @SuppressLint("Range") int time = cursor.getInt(cursor.getColumnIndex(KEY_TIME));
 
-                ScoreDataModel scoreData = new ScoreDataModel(scoreId, userId, moves, timeTaken);
+                ScoreDataModel scoreData = new ScoreDataModel(scoreId, userId, move, time);
                 scoreList.add(scoreData);
             } while (cursor.moveToNext());
         }
         cursor.close();
         return scoreList;
     }
+
+ //FOR TOPSCORER............................
+
+
+
+
 
     //FOR HISRORY...............
 
