@@ -89,7 +89,6 @@ public class HomeActivity extends AppCompatActivity {
         cv.setOnClickListener(v -> {
            Intent i=new Intent(HomeActivity.this, HighScore.class);
            startActivity(i);
-           finish();
         });
     }
 
